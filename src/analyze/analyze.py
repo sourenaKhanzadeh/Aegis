@@ -32,7 +32,12 @@ try:
     # ✅ Manually check for additional vulnerabilities (not all are covered by detectors)
     for contract in slither.contracts:
         for function in contract.functions_entry_points:
-            function_location = f"{contract.source_mapping.filename.absolute}:{function.source_mapping.lines[0]}" if function.source_mapping.lines else contract.source_mapping.filename.absolute
+            line_info = None
+            # Check if source_mapping exists before accessing it
+            if hasattr(function, 'source_mapping') and function.source_mapping:
+                line_info = f"at line {function.source_mapping}"
+
+            function_location = f"{contract.name}:{function.name} {line_info}"
 
             # **Reentrancy**
             if function.is_reentrant and function.visibility == "external":
