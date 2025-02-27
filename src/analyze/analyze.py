@@ -138,7 +138,7 @@ def basic_vuln(contract_path:str = "contracts/vul.sol"):
                     })
 
         # ✅ Print findings
-        print(findings)
+        return findings
 
     except Exception as e:
         print(f"Error running Slither: {e}")

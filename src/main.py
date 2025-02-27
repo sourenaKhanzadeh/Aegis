@@ -9,6 +9,7 @@ import sys
 import logging
 from slither import Slither
 from detectors.gas_opt_detect import GasOptimizationDetector
+from analyze.analyze import basic_vuln
 
 def main():
     if len(sys.argv) != 2:
@@ -24,6 +25,7 @@ def main():
     # Initialize Slither
     try:
         slither_instance = Slither(solidity_file)
+        basics = basic_vuln(solidity_file)
         # The first compilation unit is what we need
         compilation_unit = slither_instance.compilation_units[0]
         # Create and register the detector
@@ -60,6 +62,10 @@ def main():
             print(f"Error in detector analysis: {str(e)}")
             import traceback
             traceback.print_exc()
+        finally:
+            print("BASIC VULNERABITLITIES")
+            print("="*100)
+            print(basics)
             
     except Exception as e:
         print(f"Error initializing Slither: {str(e)}")
