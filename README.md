@@ -1,4 +1,4 @@
 # Aegis
 
-[Aegis](./icon.jpg)
+![Aegis](./icon.jpg)
 
