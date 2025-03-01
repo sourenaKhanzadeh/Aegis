@@ -12,7 +12,7 @@ from slither import Slither
 
 from analyze.analyze import basic_vuln
 from detectors.gas_opt_detect import GasOptimizationDetector
-
+from parsers.shallow import SecurityScoreParser
 
 def main():
     if len(sys.argv) != 2:
@@ -41,38 +41,20 @@ def main():
             # Print results
             print("\n=== Gas Optimization Report ===\n")
 
-            if not results:
-                print("No gas optimization opportunities found!")
-            else:
-                print(f"Found {len(results)} gas optimization opportunities:\n")
-                for finding in results:
-                    # Extract information safely with defaults
-                    impact = finding.get("impact", "Unknown")
-                    description = finding.get("description", "No description provided")
-                    location = finding.get("location", "Unknown location")
-                    recommendation = finding.get(
-                        "recommendation", "No recommendation provided"
-                    )
-
-                    # Print the formatted finding
-                    print(f"[{impact}] {description}")
-                    print(f"  Location: {location}")
-                    print(f"  Recommendation: {recommendation}\n")
-
+            print(f"Score for Vuln")
+            print("="*100)
+            ssp = SecurityScoreParser()
+            print(ssp.get_json_report(basics, results))
+            
         except Exception as e:
             print(f"Error in detector analysis: {str(e)}")
             import traceback
 
             traceback.print_exc()
-        finally:
-            print("BASIC VULNERABITLITIES")
-            print("=" * 100)
-            print(basics)
-
+    
     except Exception as e:
         print(f"Error initializing Slither: {str(e)}")
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()
